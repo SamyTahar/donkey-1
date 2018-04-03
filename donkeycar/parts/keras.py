@@ -15,6 +15,7 @@ models to help direct the vehicles motion.
 import os
 import numpy as np
 import keras
+import time
 
 import donkeycar as dk
 
@@ -75,14 +76,26 @@ class KerasCategorical(KerasPilot):
             self.model = model
         else:
             self.model = default_categorical()
+        self.end_break = None
         
     def run(self, img_arr):
         img_arr = img_arr.reshape((1,) + img_arr.shape)
-        angle_binned, throttle = self.model.predict(img_arr)
+        angle_binned, break_binned, throttle = self.model.predict(img_arr)
         #print('throttle', throttle)
         #angle_certainty = max(angle_binned[0])
         angle_unbinned = dk.utils.linear_unbin(angle_binned)
-        return angle_unbinned, throttle[0][0]
+        break_unbinned = dk.utils.linear_unbin(break_binned)
+        th = throttle[0][0]
+        if self.end_break == None:
+            if break_unbinned > 0.5:
+                self.end_break = time.time() + 1000
+                th = -1
+        else:
+            if self.end_break < time.time():
+                self.end_break = None
+            else: 
+                th = -1
+        return angle_unbinned, th
     
     
     

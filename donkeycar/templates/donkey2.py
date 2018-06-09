@@ -163,6 +163,15 @@ def drive(cfg, model_path=None, use_joystick=False, use_tx=False, use_pirf=False
                   'pilot/angle', 'pilot/throttle'],
           outputs=['angle', 'throttle'])
     
+    def boost(mode, pilot_angle, pilot_throttle):
+        if (mode == 'local'):
+            if (pilot_angle < cfg.BOOST_ST_THRESH):
+                return pilot_throttle * cfg.BOOST_THROTTLE
+        return pilot_throttle
+
+    boost_part = Lambda(boost)
+    V.add(boost_part)
+
     if use_sonar:
         sonar = SonarController(trigger_pin=cfg.SON_TRIGGER_PIN,
                             echo_pin=cfg.SON_ECHO_PIN,

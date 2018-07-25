@@ -2,6 +2,9 @@
 	"folders": [
 		{
 			"path": "."
+		},
+		{
+			"path": "/Users/az02289/dev/sagemaker/sagemaker-tensorflow-containers"
 		}
 	],
 	"settings": {}

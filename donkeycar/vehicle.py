@@ -96,6 +96,7 @@ class Vehicle():
                 if max_loop_count and loop_count > max_loop_count:
                     self.on = False
 
+                print("--- %s seconds ---" % (time.time() - start_time))
                 sleep_time = 1.0 / rate_hz - (time.time() - start_time)
                 if sleep_time > 0.0:
                     time.sleep(sleep_time)

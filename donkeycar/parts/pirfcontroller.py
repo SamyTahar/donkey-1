@@ -134,6 +134,7 @@ class PiRfController(object):
         modes = ['user', 'local_angle', 'local']
         self._crt_mode = (self._crt_mode + 1) % 3
         self.mode = modes[self._crt_mode]
+        print(self.mode)
 
     def init(self):
         '''
@@ -159,13 +160,12 @@ class PiRfController(object):
             if steering_tx == None:
                 steering_tx = 1500
             change_mode_tx = self._changeModePwm.timeHigh
-            if (change_mode_tx == None or change_mode_tx < 1500):
+            if (change_mode_tx == None or change_mode_tx < 1300):
                 self._ready_change_mode = True
-            elif (self._changeModePwm.timeLow != None and self._changeModePwm.timeLow > 1500):
+            elif (self._changeModePwm.timeLow != None and self._changeModePwm.timeLow > 1700):
                 if self._ready_change_mode:
                     self.next_mode()
                 self._ready_change_mode = False
-            freq_tx = 60
             # compensate floating zero point
             comp_throttle = throttle_tx-self.throttle_tx_thresh
             comp_max = self.throttle_tx_max-self.throttle_tx_thresh

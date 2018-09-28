@@ -100,7 +100,7 @@ class Vehicle():
                 sleep_time = 1.0 / rate_hz - (time.time() - start_time)
                 if (round(start_time) != display_time):
                     display_time = round(start_time)
-                    print('loop sleep={:01.2f}'.format(sleep_time))
+#                    print('loop sleep={:01.2f}'.format(sleep_time))
                 if sleep_time > 0.0:
                     time.sleep(sleep_time)
 

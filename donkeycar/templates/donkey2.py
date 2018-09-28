@@ -116,7 +116,7 @@ def drive(cfg, model_path=None, use_joystick=False, use_tx=False, use_pirf=False
                            steering_act = steering,
                            throttle_act = throttle,
                            model_path=model_path,
-                           record_on_local=record_on_local,
+                           record_on_local=False,
                            verbose = cfg.PI_RF_VERBOSE
                            )
 #        fpv = FPVWebController()

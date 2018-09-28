@@ -115,6 +115,7 @@ class PiRfController(object):
                  steering_act=None,
                  throttle_act=None,
                  model_path=None,
+                 record_on_local=False,
                  verbose = False
                  ):
 
@@ -142,6 +143,7 @@ class PiRfController(object):
         self._changeModePwm = None
         self._ready_change_mode = True
         self.model_path = model_path
+        self.record_on_local = record_on_local
         self.verbose = verbose
 
         self.steering_act = steering_act
@@ -152,7 +154,7 @@ class PiRfController(object):
         turn on recording when non zero throttle in the user mode.
         '''
         if self.auto_record_on_throttle:
-            self.recording = (self.throttle != 0.0 and self.mode == 'user')
+            self.recording = (self.throttle > 0.05 and (self.mode == 'user' or self.record_on_local))
 
     def set_mode(self, level):
         if self.model_path is not None:
@@ -163,7 +165,7 @@ class PiRfController(object):
             else:
                 self.mode = 'local_angle'
                 self._throttlePwm.initCb(True)
-            self.recording = False
+            self.recording = self.record_on_local
         else:
             self._steeringPwm.initCb(True)
             self._throttlePwm.initCb(True)

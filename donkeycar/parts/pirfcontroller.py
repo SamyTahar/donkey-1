@@ -154,7 +154,12 @@ class PiRfController(object):
         turn on recording when non zero throttle in the user mode.
         '''
         if self.auto_record_on_throttle:
-            self.recording = (self.throttle > 0.05 and (self.mode == 'user' or self.record_on_local))
+            if self.mode == 'user':
+                self.recording = self.throttle > 0.05
+            elif self.mode == 'local_angle':
+                self.recording = self.throttle > 0.05 and self.record_on_local
+            elif self.mode == 'local':
+                self.recording = self.record_on_local
 
     def set_mode(self, level):
         if self.model_path is not None:
